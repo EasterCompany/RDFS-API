@@ -1,7 +1,7 @@
-from core.library import AsyncJsonWebsocketConsumer
+from core.library import AsyncWebsocketConsumer
 
 
-class StatusConsumer(AsyncJsonWebsocketConsumer):
+class StatusConsumer(AsyncWebsocketConsumer):
   ''' Web Socket Interface for the Process View '''
 
   async def connect(self, *args, **kwargs):

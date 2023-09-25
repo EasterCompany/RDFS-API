@@ -1,8 +1,8 @@
 from . import API
-from .endpoints import status
+from .endpoints.status import StatusConsumer
 
 API.socket(
   "status",
-  status.StatusConsumer,
+  StatusConsumer,
   "Constant socket connection used to verify server status"
 )
