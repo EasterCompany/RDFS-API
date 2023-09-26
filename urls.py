@@ -1,8 +1,20 @@
 from . import API
-from .endpoints.status import StatusConsumer
+from .endpoints import generic, upload, download
 
 API.socket(
-  "status",
-  StatusConsumer,
-  "Constant socket connection used to verify server status"
+  "info",
+  generic.GenericConsumer,
+  "Constant socket connection used to communicate generic data"
+)
+
+API.path(
+  "upload",
+  upload.upload,
+  "Allows a user to upload files"
+)
+
+API.path(
+  "download",
+  download.download,
+  "Allow a user to download files"
 )

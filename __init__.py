@@ -1,19 +1,16 @@
-# Universal API __init__.py
-#   Edit this file to configure your API
-
-# Overlord library
-from core.library import Path, dirname, realpath, api
+from core.library import Path, dirname, realpath, api, mkdirs
+from web.settings import BASE_DIR
 
 
 class _API(api.UniversalAPI):
 
-  # API.NAME represents which endpoint the urls for this API will be based on
-  # for example: .../api/api_name/foobar
   NAME = Path(dirname(realpath(__file__))).parts[-1]
+
+  UPLOAD_DIR = Path(BASE_DIR) / "static/shared/rdfs"
 
   def __init__(self) -> None:
     super().__init__()
+    mkdirs(self.UPLOAD_DIR, exist_ok=True)
 
 
-# Exported Interface
 API = _API()
