@@ -1,4 +1,4 @@
-from core.library import AsyncJsonWebsocketConsumer, database_sync_to_async
+from core.library import AsyncJsonWebsocketConsumer, database_sync_to_async, time
 from ..tables import RDFSModel
 
 
@@ -21,6 +21,17 @@ class GenericConsumer(AsyncJsonWebsocketConsumer):
     }
 
     for f in user_file_objects:
-      user_data['userFiles'].append(dict(f))
+      user_data['userFiles'].append({
+        "uuid": f.uuid,
+        "name": str(f),
+        "alias": f.name,
+        "ext": f.ext,
+        "size": f.size,
+        "lastModified": time.get_datetime_string(f.last_modified),
+        "uploadedBy": f.uploaded_by,
+        "dateUploaded": time.get_datetime_string(f.date_uploaded),
+        "directory": f.directory,
+        "url": f.source_path()
+      })
 
     return user_data

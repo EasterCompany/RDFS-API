@@ -6,7 +6,7 @@ class _API(api.UniversalAPI):
 
   NAME = Path(dirname(realpath(__file__))).parts[-1]
 
-  UPLOAD_DIR = Path(BASE_DIR) / "static/shared/rdfs"
+  UPLOAD_DIR = Path(BASE_DIR) / "static/shared"
 
   def __init__(self) -> None:
     super().__init__()

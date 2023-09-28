@@ -1,13 +1,13 @@
 from core.library import models, uuid, time
 
 DIRECTORIES = {
-  'generic': ('GENERIC', 'Generic'),
-  'pictures': ('PICTURES', 'Pictures'),
-  'videos': ('VIDEOS', 'Videos'),
-  'audio': ('AUDIO', 'Audio'),
-  'games': ('GAMES', 'Games'),
-  'tv & movies': ('TV & MOVIES', 'TV & Movies'),
-  'documents': ('DOCUMENTS', 'Documents')
+  'generic': 'Generic',
+  'pictures': 'Pictures',
+  'videos': 'Videos',
+  'audio': 'Audio',
+  'games': 'Games',
+  'tv & movies': 'TV & Movies',
+  'documents': 'Documents'
 }
 
 
@@ -20,16 +20,13 @@ class RDFSModel(models.Model):
     max_length=36,
     primary_key=True
   )
-  name = models.CharField(
+  name = models.TextField(
     null=False,
-    blank=False,
-    default=uuid,
-    max_length=128
+    blank=False
   )
-  ext = models.CharField(
+  ext = models.TextField(
     null=True,
-    blank=True,
-    max_length=36,
+    blank=True
   )
   size = models.IntegerField(
     null=False,
@@ -46,28 +43,19 @@ class RDFSModel(models.Model):
     blank=False,
     max_length=36,
   )
-  date_upload = models.DateTimeField(
+  date_uploaded = models.DateTimeField(
     null=False,
     blank=False,
     default=time.now
   )
-  directory = models.CharField(
+  directory = models.TextField(
     null=False,
     blank=False,
-    default=DIRECTORIES['generic'],
-    choices=(DIRECTORIES[dir] for dir in DIRECTORIES),
-    max_length=36
+    default=DIRECTORIES['generic']
   )
 
   def __str__(self) -> str:
-    return f"{self.name}.{self.ext}"
+    return f"{self.name}{self.ext}"
 
-  def __dict__(self) -> dict:
-    return {
-      "uuid": self.uuid,
-      "name": f"{self.name}.{self.ext}",
-      "alias": self.name,
-      "ext": self.ext,
-      "type": self.directory,
-      "uploaded_by": self.uploaded_by
-    }
+  def source_path(self) -> str:
+    return f"/static/shared/{self.uploaded_by}/rdfs/{self.uuid}/{self}"
