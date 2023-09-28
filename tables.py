@@ -1,6 +1,6 @@
 from core.library import models, uuid, time
 
-DIRECTORIES = {
+FILE_TYPES = {
   'generic': 'Generic',
   'pictures': 'Pictures',
   'videos': 'Videos',
@@ -28,7 +28,17 @@ class RDFSModel(models.Model):
     null=True,
     blank=True
   )
+  mime_type = models.TextField(
+    null=True,
+    blank=True,
+    default="text/html"
+  )
   size = models.IntegerField(
+    null=False,
+    blank=False,
+    default=0
+  )
+  compressed_size = models.IntegerField(
     null=False,
     blank=False,
     default=0
@@ -48,10 +58,10 @@ class RDFSModel(models.Model):
     blank=False,
     default=time.now
   )
-  directory = models.TextField(
+  file_type = models.TextField(
     null=False,
     blank=False,
-    default=DIRECTORIES['generic']
+    default=FILE_TYPES['generic']
   )
 
   def __str__(self) -> str:
