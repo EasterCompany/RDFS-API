@@ -26,17 +26,23 @@ class RDFSModel(models.Model):
   )
   ext = models.TextField(
     null=True,
-    blank=True
+    blank=True,
+    default=""
   )
   mime_type = models.TextField(
-    null=True,
-    blank=True,
+    null=False,
+    blank=False,
     default="text/html"
   )
   size = models.IntegerField(
     null=False,
     blank=False,
     default=0
+  )
+  compressed_alias = models.TextField(
+    null=True,
+    blank=True,
+    default=""
   )
   compressed_size = models.IntegerField(
     null=False,
@@ -66,6 +72,3 @@ class RDFSModel(models.Model):
 
   def __str__(self) -> str:
     return f"{self.name}{self.ext}"
-
-  def source_path(self) -> str:
-    return f"/static/shared/{self.uploaded_by}/rdfs/{self.uuid}/{self}"

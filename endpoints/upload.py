@@ -1,6 +1,6 @@
-import os
 from .. import API, tables
-from core.library import api, default_storage, mkdirs, uuid, console, remove
+from ..fs.compressor import Compressor
+from core.library import api, default_storage, mkdirs, uuid
 
 
 def upload(req, *args, **kwargs):
@@ -20,34 +20,26 @@ def upload(req, *args, **kwargs):
   f_uuid = uuid()
   f_dir = u_path / f_uuid
   f_path = f_dir / f.name
+  f_mime_type = req.GET.get('mimeType')
   mkdirs(f_dir, exist_ok=True)
 
   # Save file to disk
   default_storage.save(f_path, f)
 
   # Compress file
-  console.input(f"lrzip -z {f.name}", cwd=f_dir)
+  f = Compressor(file_dir=f_dir, absolute_file_path=f_path, mime_type=f_mime_type).compress()
 
   # Save file to Database
-  f_name, f_ext = os.path.splitext(f.name)
   tables.RDFSModel.objects.create(
     uuid=f_uuid,
-    name=f_name,
-    ext=f_ext,
-    mime_type=req.GET.get('mimeType'),
-    size=os.path.getsize(f_path),
-    compressed_size=os.path.getsize(f"{f_path}.lrz"),
+    name=f['name'],
+    ext=f['ext'],
+    mime_type=f['mime_type'],
+    size=f['size'],
+    compressed_alias=f['compressed_alias'],
+    compressed_size=f['compressed_size'],
     uploaded_by=user.data.uuid
   )
 
-  # Delete original
-  remove(f_path)
-
-  # Retrieve file from database
-  f_db = tables.RDFSModel.objects.get(uuid=f_uuid)
-
   # Complete process
-  return api.data({
-    "url": f_db.source_path(),
-    "compressedSize": f_db.compressed_size
-  })
+  return api.data({"compressedSize": f['compressed_size']})

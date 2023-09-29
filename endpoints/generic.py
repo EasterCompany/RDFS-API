@@ -28,11 +28,11 @@ class GenericConsumer(AsyncJsonWebsocketConsumer):
         "ext": f.ext,
         "mimeType": f.mime_type,
         "size": f.size,
+        "compressed_size": f.compressed_size,
         "lastModified": time.get_datetime_string(f.last_modified),
         "uploadedBy": f.uploaded_by,
         "dateUploaded": time.get_datetime_string(f.date_uploaded),
-        "type": f.file_type,
-        "url": f.source_path()
+        "type": f.file_type
       })
 
     return user_data
