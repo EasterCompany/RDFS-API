@@ -1,6 +1,6 @@
 from .. import API, tables
 from ..fs.compressor import Compressor
-from core.library import api, default_storage, mkdirs, uuid
+from core.library import api, default_storage, mkdirs, uuid, getsize, rmtree, exists
 
 
 def upload(req, *args, **kwargs):
@@ -23,23 +23,39 @@ def upload(req, *args, **kwargs):
   f_mime_type = req.GET.get('mimeType')
   mkdirs(f_dir, exist_ok=True)
 
-  # Save file to disk
-  default_storage.save(f_path, f)
+  try:
+    # Save file to disk
+    default_storage.save(f_path, f)
+    f_size = getsize(f_path)
 
-  # Compress file
-  f = Compressor(file_dir=f_dir, absolute_file_path=f_path, mime_type=f_mime_type).compress()
+    # Compress file
+    f = Compressor(
+      uuid=f_uuid,
+      user_path=u_path,
+      absolute_file_path=f_path
+    )
+    f.compress()
 
-  # Save file to Database
-  tables.RDFSModel.objects.create(
-    uuid=f_uuid,
-    name=f['name'],
-    ext=f['ext'],
-    mime_type=f['mime_type'],
-    size=f['size'],
-    compressed_alias=f['compressed_alias'],
-    compressed_size=f['compressed_size'],
-    uploaded_by=user.data.uuid
-  )
+    # Save file to Database
+    tables.RDFSModel.objects.create(
+      uuid=f_uuid,
+      name=f.name,
+      ext=f.ext,
+      mime_type=f_mime_type,
+      size=f_size,
+      compressed_ext=f.compressed_ext,
+      compressed_size=f.compressed_size,
+      uploaded_by=user.data.uuid
+    )
 
-  # Complete process
-  return api.data({"compressedSize": f['compressed_size']})
+    # Complete process
+    return api.data({
+      "uploadSize": f_size,
+      "compressedSize": f.compressed_size
+    })
+
+  # Fail process
+  except Exception as error:
+    if exists(f_dir):
+      rmtree(f_dir)
+    return api.error(error)

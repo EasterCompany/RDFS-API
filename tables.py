@@ -39,32 +39,22 @@ class RDFSModel(models.Model):
     blank=False,
     default=0
   )
-  compressed_alias = models.TextField(
+  compressed_ext = models.CharField(
     null=True,
     blank=True,
-    default=""
+    max_length=8
   )
   compressed_size = models.IntegerField(
     null=False,
     blank=False,
     default=0
   )
-  last_modified = models.DateTimeField(
-    null=False,
-    blank=False,
-    default=time.now
-  )
   uploaded_by = models.CharField(
     null=False,
     blank=False,
     max_length=36,
   )
-  date_uploaded = models.DateTimeField(
-    null=False,
-    blank=False,
-    default=time.now
-  )
-  file_type = models.TextField(
+  category = models.TextField(
     null=False,
     blank=False,
     default=FILE_TYPES['generic']

@@ -23,16 +23,11 @@ class GenericConsumer(AsyncJsonWebsocketConsumer):
     for f in user_file_objects:
       user_data['userFiles'].append({
         "uuid": f.uuid,
-        "name": str(f),
-        "alias": f.name,
+        "name": f.name,
         "ext": f.ext,
-        "mimeType": f.mime_type,
         "size": f.size,
         "compressed_size": f.compressed_size,
-        "lastModified": time.get_datetime_string(f.last_modified),
-        "uploadedBy": f.uploaded_by,
-        "dateUploaded": time.get_datetime_string(f.date_uploaded),
-        "type": f.file_type
+        "category": f.category
       })
 
     return user_data
