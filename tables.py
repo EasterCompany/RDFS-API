@@ -1,4 +1,4 @@
-from core.library import models, uuid, time
+from core.library import models, uuid
 
 FILE_TYPES = {
   'generic': 'Generic',

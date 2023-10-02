@@ -25,8 +25,9 @@ class GenericConsumer(AsyncJsonWebsocketConsumer):
         "uuid": f.uuid,
         "name": f.name,
         "ext": f.ext,
+        "mimeType": f.mime_type,
         "size": f.size,
-        "compressed_size": f.compressed_size,
+        "compressedSize": f.compressed_size,
         "category": f.category
       })
 
