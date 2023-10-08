@@ -1,5 +1,5 @@
-from core.library import Path, dirname, realpath, api, mkdirs
-from web.settings import BASE_DIR
+from core.library import Path, dirname, realpath, api
+from web.settings import MEDIA_ROOT
 
 
 class _API(api.UniversalAPI):
@@ -10,7 +10,7 @@ class _API(api.UniversalAPI):
     super().__init__()
 
   def upload_dir(self, user) -> None:
-    return Path(BASE_DIR) / f"static/shared/{user.data.uuid}/rdfs"
+    return Path(MEDIA_ROOT) / f"{user.data.uuid}/rdfs"
 
 
 API = _API()
