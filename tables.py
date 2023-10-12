@@ -62,3 +62,6 @@ class RDFSModel(models.Model):
 
   def __str__(self) -> str:
     return f"{self.name}{self.ext}"
+
+  def compressed_file_name(self) -> str:
+    return f"{self.uuid}{self.compressed_ext}"

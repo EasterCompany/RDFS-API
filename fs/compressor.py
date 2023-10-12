@@ -98,5 +98,5 @@ class Compressor:
 
   def lrzip(self) -> None:
     ''' lrzip a file and set the alias '''
-    console.input(f'lrzip -Q -U -z {self.path}', cwd=self.dir)
+    console.input(f'lrzip -Q -U -D -z {self.path}', cwd=self.dir)
     self.finalize('lrz')
