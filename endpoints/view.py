@@ -6,7 +6,7 @@ from ..fs.decompressor import Decompressor
 
 
 def view(req, file_uuid:str, *args, **kwargs):
-  ''' Returns an HTML view containing an embedded file. '''
+  ''' Returns raw file data for viewing within an embedded context '''
   user = api.get_user(req)
   user_dir = API.upload_dir(user)
 

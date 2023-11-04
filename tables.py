@@ -59,6 +59,11 @@ class RDFSModel(models.Model):
     blank=False,
     default=FILE_TYPES['generic']
   )
+  privacy = models.TextField(
+    null=False,
+    blank=False,
+    default="private"
+  )
 
   def __str__(self) -> str:
     return f"{self.name}{self.ext}"
