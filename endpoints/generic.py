@@ -28,7 +28,9 @@ class GenericConsumer(AsyncJsonWebsocketConsumer):
         "mimeType": f.mime_type,
         "size": f.size,
         "compressedSize": f.compressed_size,
-        "category": f.category
+        "uploadedBy": f.uploaded_by,
+        "category": f.category,
+        "privacy": f.privacy
       })
 
     return user_data
