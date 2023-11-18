@@ -1,4 +1,4 @@
-from core.library import AsyncJsonWebsocketConsumer, database_sync_to_async, time
+from core.library import AsyncJsonWebsocketConsumer, database_sync_to_async
 from ..tables import RDFSModel
 
 
